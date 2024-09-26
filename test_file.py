@@ -22,11 +22,15 @@ fast_periods    = 12
 slow_periods    = 26
 signal_periods  = 9
 
+#For neural network model
+steps_perc_change   = 5                   #outcome of situation a is determined by a + couple of steps
+bins                = [-100,-2,-1,1,2,100] #percentual gain is classified into bins: [-100,-2], [-2, -1], etc
+labels              = [-2,-1,0,1,2]       #These bins are then labels: [-100,-2] becomes -2, etc.
 ##############################################################
 #fetching historical data
 ##############################################################
 df = yf.download(ticker_symbol, start=start_date, end=end_date).reset_index()
-df['Perc'] = calculate_percentual_change(df[['Open']], steps = 20)
+df['Perc'] = calculate_percentual_change(df[['Open']], steps = steps_perc_change)
 df['Binned'] = bucketting_prices(df['Perc'])
 print(df.head())
 ##############################################################
