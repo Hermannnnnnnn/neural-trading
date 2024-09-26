@@ -1,5 +1,4 @@
-#Neural trading
-# Overview
+# Neural trading
 1. [Introduction](1-introduction)
 2. [Historical data](2-historical-data-)
     1. [yfinance](21-yfinance)
@@ -15,16 +14,12 @@
 
 # 1. Introduction
 In this project we try to apply neural network models on stock indicators. For this we need:
-- historical stock data,
-- Stock indicators,
-- ML modeling tool,
-- Lastly and most importantly, a **conceptual base model for the neural network**. Some correlation should exist (hopefully :p) between a future price movement and:
-    - the degree of bull/bear market generally (SPY500 for example)
-    - the degree of bull/bear market locally (the stock being processed)
-    - the local behaviour of price movement (the last few data points)
-    - the volumes traded and those points.
+- **historical stock data**,
+- **Stock indicators**,
+- **ML modeling tool**,
+- Lastly and most importantly, a **conceptual base model for the neural network**.
 
-Hereunder we'll give a short explanation about some of the choices we made regarding tools.
+Hereunder we'll give a short explanation about some of the choices we made regarding tools and model.
 
 # 2. Historical data
 At the moment we're using **yfinance** because it's the easiest to use. Long term this is probably not the right choice for us, once we'll try building our own auto-trading bot. Then other platforms will be better, like **binance** or others [link](https://github.com/DaveSkender/Stock.Indicators/discussions/579).
@@ -33,7 +28,7 @@ At the moment we're using **yfinance** because it's the easiest to use. Long ter
 yfinance however is open source :+1:. You can easily fetch historical data no prob. Simply install the requirements.txt and look at test_file.py
 
 ## 2.2 Binance
-We tried out binance, stepped away from it since you'll need an acount, deposit some money and get validated. In any case:
+We tried out binance, stepped away from it since you'll need an acount, deposit some money and get validated :-1:. In any case:
 
 **Step I**
 go to (https://www.binance.com/en)[https://www.binance.com/en].
@@ -65,7 +60,7 @@ We'll use at this moment of writing the following as our N-dimensional input:
 One key part of neural networks is that you associate a certain input with an outcome. This outcome should belong to a **limited set of possibilities**!!
 
 We will do this as follows:
-*A data point will be classified as either Very good, good, neutral, bad, very bad. The criteria is by looking x data points further and classifying by percentual increase/decrease. For instance (but this can be parametrized), with x as percentual change:
+*A data point will be classified as either Very good, good, neutral, bad, very bad. The criteria is by looking N data points further and classifying by percentual increase/decrease. For instance (but this can be parametrized), with x as percentual change:
 - if x > 2% then result is very good.
 - if 2%  > x > 1% then good.
 - if 1%  > x > -1% then neutral.
