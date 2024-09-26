@@ -1,3 +1,6 @@
 .env
 .venv/
 results/
+!results/pictures
+results/pictures/*
+!results/pictures/.gitkeep

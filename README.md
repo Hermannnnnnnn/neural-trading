@@ -24,7 +24,7 @@ In this project we try to apply neural network models on stock indicators. We us
 At the moment we're using yfinance because it's the easiest to use. On this [link](https://github.com/DaveSkender/Stock.Indicators/discussions/579) you'll find a discussion about which tools are available.
 
 ## 2.1 yfinance
-yfinance however is open source :1:. You can easily fetch historical data no prob. Simply install the requirements.txt and look at test_file.py
+yfinance however is open source :+1:. You can easily fetch historical data no prob. Simply install the requirements.txt and look at test_file.py
 
 ## 2.2 Binance
 To use the binance python package you'll need
