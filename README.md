@@ -1,38 +1,42 @@
+#Neural trading
 # Overview
 1. [Introduction](1-introduction)
-2. [Fetching historical data - packages](2-fetching-historical-data-packages)
+2. [Historical data](2-historical-data-)
     1. [yfinance](21-yfinance)
     2. [binance](22-binance)
-
-3. [ML model packages](3-ml-model-packages)
-4. [Stock indicators](4-stock-indicators)
+3. [ML model tools](3-ml-model-tools)
+    1. [stockpy](31-stockpy)
+    2. [tensorflow](32-tensorflow)
+4. [Stock indicator tools](4-stock-indicators-tools)
 5. [Neural network model](5-neural-network-model)
-    1.  [Bucketing](51-bucketing)
+    1.  [Input](51-input)
+    2.  [Outcome](51-outcome)
+
+
 # 1. Introduction
-In this project we try to apply neural network models on stock indicators. We use:
-- **yfinance**, since its open source and very quickly set up.
-- **tensorflow or stockpy** to apply the neural network model for optimization.
-- **stock-indicators** for calculating, well, stock indicators.
-- Lastly and most importantly, a **base model for the neural network**. Some correlation should exist between a future price movement and:
+In this project we try to apply neural network models on stock indicators. For this we need:
+- historical stock data,
+- Stock indicators,
+- ML modeling tool,
+- Lastly and most importantly, a **conceptual base model for the neural network**. Some correlation should exist (hopefully :p) between a future price movement and:
     - the degree of bull/bear market generally (SPY500 for example)
     - the degree of bull/bear market locally (the stock being processed)
     - the local behaviour of price movement (the last few data points)
     - the volumes traded and those points.
 
+Hereunder we'll give a short explanation about some of the choices we made regarding tools.
 
-# 2. Fetching historical data - packages
-At the moment we're using yfinance because it's the easiest to use. On this [link](https://github.com/DaveSkender/Stock.Indicators/discussions/579) you'll find a discussion about which tools are available.
+# 2. Historical data
+At the moment we're using **yfinance** because it's the easiest to use. Long term this is probably not the right choice for us, once we'll try building our own auto-trading bot. Then other platforms will be better, like **binance** or others [link](https://github.com/DaveSkender/Stock.Indicators/discussions/579).
 
 ## 2.1 yfinance
 yfinance however is open source :+1:. You can easily fetch historical data no prob. Simply install the requirements.txt and look at test_file.py
 
 ## 2.2 Binance
-To use the binance python package you'll need
-Hereunder a short how-to to get the API token en username. You'll store these in de .env file (see .env_template for namegivings).
-HOWEVER: you have to deposit some money and your account needs to be verified :-1:.
+We tried out binance, stepped away from it since you'll need an acount, deposit some money and get validated. In any case:
 
 **Step I**
-go to (https://www.binance.com/en)[https://www.binance.com/en] . Easy right :? ?
+go to (https://www.binance.com/en)[https://www.binance.com/en].
 
 **Step II**
 sign up or log in.
@@ -41,16 +45,23 @@ sign up or log in.
 wait until approved and deposit money :/
 
 
-# 3. ML model packages
-## stockpy
+# 3. ML model tools
+## 3.1 Stockpy
 Stockpy is a python package offering a lot of tools for machine learning. Key point of interest of mine is neural networks. Let's see if it works applying it to stock indicators.
+## 3.2 Tensorflow
+to explore...
 
-# 4. Stock indicators
+# 4. Stock indicator tools
 ## stock-indicators
 There's a variety of stock indicators. How convenient that there's a python package called stock-indicators that holds the functions capable of calculating these indices on stock data.
+Tool works with so-called quotes meh. To use it you'll need to have python duh, but also .NET. See [link](https://python.stockindicators.dev/guide/).
 
 # 5. Neural network model
-## 5.1 bucketing
+## 5.1 Input
+We'll use at this moment of writing the following as our N-dimensional input:
+- a set of 5 concurrent MACD data points,
+- combined with the respective trading volumes.
+## 5.2 Outcome
 One key part of neural networks is that you associate a certain input with an outcome. This outcome should belong to a **limited set of possibilities**!!
 
 We will do this as follows:
