@@ -19,7 +19,7 @@ In this project we try to apply neural network learning models to the field of t
 - **ML modeling tool**,
 - Lastly and most importantly, a **conceptual base model for the neural network**.
 
-Hereunder we'll give a short explanation about some of the choices we made regarding tools and model. Each of these functionalities are built into separate helper files, which are used by the main.py.
+Hereunder we'll give a short explanation about some of the choices we made regarding tools and model. You'll find each of these requirements in their respective helper file. These will be used in the main.py file.
 
 # 2. Historical data
 At the moment we're using **yfinance** because it's the easiest to use. Long term this is probably not the right choice for us, once we'll try building our own auto-trading bot. Then other platforms will be better, like **binance** or others [link](https://github.com/DaveSkender/Stock.Indicators/discussions/579).
