@@ -23,7 +23,7 @@ You'll find each of these requirements wrapped in its own *helper* module. They 
 
 **Prerequisites to run this project**:
 1. Have python installed (latest version should be enough lol)
-2. Have .NET installed see [4.1 Stock-indicators](#41-stock-indicators)
+2. Have .NET installed (see [4.1 Stock-indicators](#41-stock-indicators))
 3. Run `python -m venv .venv` in the project folder
 4. Activate the venv by executing `source .venv/bin/activate` for linux or `source .venv/bin/activate.ps1` for windows
 4. Run `pip install -r requirements.txt`
@@ -73,7 +73,7 @@ So this means that we postulate there's a correlation between not only the MACD 
 ## 5.2 Outcome
 The outcome of a NNM is supposed to be a **limited set of possibilities**!! We will implement this as follows:
 
-*A data point will be classified as either "Very good, good, neutral, bad, very bad" (values 2,1,0,-1,-2). We will apply this classification on the percentual increase we **will** happen over a short period of time.
+*A data point will be classified as either "Very good, good, neutral, bad, very bad" (values 2,1,0,-1,-2). We will apply this classification on the percentual increase that **will** happen over a short period of time.
 
 For instance, with p as percentual change:
 - if p > 2% then result is very good.
