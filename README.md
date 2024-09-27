@@ -55,7 +55,7 @@ My computer is too slow :worried:. I wanted to use **tensorflow** since it's eas
 ## 3.1 Stockpy
 We tried **Stockpy** first, after a quick google search. However, the last change was a year ago and I can't find much usefull documentation :-1:.
 ## 3.2 Tensorflow
-Tensorflow however... is a very popular tool and it would seem very user-friendly :+1:. On (this link)[https://www.geeksforgeeks.org/implementing-neural-networks-using-tensorflow/] you can find an easy example of applying neural networking to some data.
+Tensorflow however... is a very popular tool and it would seem very user-friendly :+1:. On [this link](https://www.geeksforgeeks.org/implementing-neural-networks-using-tensorflow/) you can find an easy example of applying neural networking to some data.
 
 # 4. Stock indicator tools
 Why re-invent the wheel right (I did that some years back for these indicators :disappointed:). Of course there are packages available that calculate stock indicators! We tried out **stock-indicators**, happy so far with the results.
