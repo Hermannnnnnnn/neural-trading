@@ -68,16 +68,17 @@ Why re-invent the wheel right (I did that some years back for these indicators :
 We'll use at this moment of writing the following as our N-dimensional input:
 - a set of N concurrent MACD data points,
 - combined with the respective trading volumes.
+
 So this means that we postulate that not only the MACD signal and volume traded are correlated with the price movement, but also the MACD signals and volumes leading up to the moment.
 
 ## 5.2 Outcome
 The outcome of a NNM is supposed to be a **limited set of possibilities**!! We will implement this as follows:
 
-*A data point will be classified as either "Very good, good, neutral, bad, very bad" (values 2,1,0,-1,-2). We will apply this classification on the percentual increase that **will** happen over a short period of time.*
+*The N-dimensional input is associated with an outcome classified by possibilities "Very good, good, neutral, bad, very bad" (values 2,1,0,-1,-2). We will apply this classification on the percentual increase that **will** happen in the near future*.
 
-For instance, with p as percentual change:
-- if p > 2% then result is very good.
-- if 2%  > p > 1% then good.
-- if 1%  > p > -1% then neutral.
-- if -1% > p > -2% then bad.
+For instance, with p as the upcoming percentual change:
+- if p > 2% then result is *very good*.
+- if 2%  > p > 1% then *good*.
+- if 1%  > p > -1% then *neutral*.
+- if -1% > p > -2% then *bad*.
 - if -2% > p then very bad.
