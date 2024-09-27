@@ -23,7 +23,7 @@ You'll find each of these requirements wrapped in its own *helper* module. They 
 
 **Prerequisites to run this project**:
 1. Have python installed (latest version should be enough lol)
-2. Have .NET installed see [4.1 Stock-indicators](41-stock-indicators)
+2. Have .NET installed see [4.1 Stock-indicators](#41-stock-indicators)
 3. Run `python -m venv .venv` in the project folder
 4. Activate the venv by executing `source .venv/bin/activate` for linux or `source .venv/bin/activate.ps1` for windows
 4. Run `pip install -r requirements.txt`
