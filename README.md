@@ -44,7 +44,7 @@ wait until approved and deposit money :/
 ## 3.1 Stockpy
 Stockpy is a python package offering a lot of tools for machine learning. Key point of interest of mine is neural networks. At the moment I stepped down from this tool because the last commit to the package was a year ago and I can't find much usefull documentation :-1:.
 ## 3.2 Tensorflow
-Tensorflow however... is a very popular tool and it would seem very user-friendly :+1:.
+Tensorflow however... is a very popular tool and it would seem very user-friendly :+1:. On (https://www.geeksforgeeks.org/implementing-neural-networks-using-tensorflow/)[https://www.geeksforgeeks.org/implementing-neural-networks-using-tensorflow/] you can find an easy example of applying neural networking to some data.
 
 # 4. Stock indicator tools
 ## stock-indicators
