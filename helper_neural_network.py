@@ -50,7 +50,7 @@ class my_NNM:
         #scaling sets to range of [0,1]
         max_val = self.train_df_prices.max(axis= 0)
         min_val = self.train_df_prices.min(axis= 0)    
-        range = min_val.sub(max_val)
+        range = max_val.sub(min_val)
         # range = max_val - min_val
         self.train_df_prices = (self.train_df_prices - min_val)/range
         self.val_df_prices =  (self.val_df_prices- min_val)/range
@@ -59,10 +59,13 @@ class my_NNM:
         self.X_val      = self.val_df_prices[labels]
         self.y_train    = self.train_df_prices[self.target_field]
         self.y_val      = self.val_df_prices[self.target_field]
-
+        print(self.X_train)
+        print(self.X_val)
+        print(self.y_train)
+        print(self.y_val)
     def prep_NNM(self, layers):
         input_shape = [self.X_train.shape[1]]       
-
+        print(input_shape)
         self.model = tf.keras.Sequential([        
             tf.keras.layers.Dense(units=64, activation='relu',
                                 input_shape=input_shape),

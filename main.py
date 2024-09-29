@@ -17,9 +17,9 @@ end_date            = '2024-08-24'
 interval            = '1d'
 #for percentual increase calculations and bucketting
 field               = 'Close'
-steps_perc_change   = 5
-bins                = [-100,-2,-1,1,2,100] #percentual gain is classified into bins: [-100,-2], [-2, -1], etc
-labels              = [-2,-1,0,1,2]       #These bins are then labels: [-100,-2] becomes -2, etc.
+steps_perc_change   = 20
+bins                = [-100,-2,2,100]#[-100,-2,-1,1,2,100] #percentual gain is classified into bins: [-100,-2], [-2, -1], etc
+labels              = [-2,0,2] #[-2,-1,0,1,2]       #These bins are then labels: [-100,-2] becomes -2, etc.
 
 ##for macd
 fast_periods    = 12
