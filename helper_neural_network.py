@@ -1,5 +1,7 @@
 import tensorflow as tf
 import re
+import pandas as pd
+import os
 
 class my_NNM:
     def __init__(self, df_prices, label_fields = ['Close', 'Volume'], target_field = 'some_bin_column', number_of_shifts_of_labels=5):
@@ -22,34 +24,37 @@ class my_NNM:
         self.shift_labels()
     
     def shift_labels(self):
-        if not set(self.label_fields) <=  self.df_prices.columns.tolist():
-          raise NameError(f'Wrong field. {str(self.label_fields)} does not match the column headers {str(self.df_prices.columns.tolist())}')
-        elif self.number_of_shifts_of_labels <= 0:
-          raise ValueError(f'Wrong value for number_of_shifts_of_labels. Shoulb be > 0, is {self.number_of_shifts_of_labels}')            
-        else:
+        # if not set(self.label_fields) <=  self.df_prices.columns.tolist():
+        #   raise NameError(f'Wrong field. {str(self.label_fields)} does not match the column headers {str(self.df_prices.columns.tolist())}')
+        # elif self.number_of_shifts_of_labels <= 0:
+        #   raise ValueError(f'Wrong value for number_of_shifts_of_labels. Shoulb be > 0, is {self.number_of_shifts_of_labels}')            
+        # else:
         
-          for field in self.label_fields:
-             for steps in range(self.number_of_shifts_of_labels):
+        for field in self.label_fields:
+            for steps in range(self.number_of_shifts_of_labels):
                 self.df_prices[f'{field}_shifted_{steps}']       = self.df_prices[field].shift(-steps)
-        self.df_prices.dropna(how='any')
+        self.df_prices.dropna(how='any', inplace=True)
 
     def prep_data(self, frac=0.80):
+        labels = []
+        #dividing sets into labels and target
+        for column in self.df_prices.columns.tolist():
+            for my_label in self.label_fields:
+                if re.search(rf'{my_label}_shifted_[\d]+', column):
+                    labels.append(column)
+        # labels = [x for x in self.df_prices.columns.tolist() if re.search(f'{y}\_shifted\_\d', x) for y in self.label_fields]
         #dividing data into its training set and validation set
         count_rows = self.df_prices.shape[0]
-        self.train_df_prices = self.df_prices[:(round(count_rows*frac))]
-        self.val_df_prices = self.df_prices[( - round(count_rows*frac)):count_rows]
-        
+        self.train_df_prices = self.df_prices[labels + [self.target_field]][:(round(count_rows*frac))]
+        self.val_df_prices = self.df_prices[labels + [self.target_field]][( round(count_rows*frac)):count_rows]
         #scaling sets to range of [0,1]
         max_val = self.train_df_prices.max(axis= 0)
-        min_val = self.train_df_prices.min(axis= 0)        
-        range = max_val - min_val
-
+        min_val = self.train_df_prices.min(axis= 0)    
+        range = min_val.sub(max_val)
+        # range = max_val - min_val
         self.train_df_prices = (self.train_df_prices - min_val)/range
         self.val_df_prices =  (self.val_df_prices- min_val)/range
 
-        #dividing sets into labels and target
-        labels = [x for x in self.df_prices.columns.tolist() if re.search(f'{y}\_shifted\_\d', x) for y in self.label_fields]
-        
         self.X_train    = self.train_df_prices[labels]
         self.X_val      = self.val_df_prices[labels]
         self.y_train    = self.train_df_prices[self.target_field]
@@ -81,8 +86,23 @@ class my_NNM:
                    epochs=15,  # total epoch
                    )
        
-    def predict_NNM(self):
+    # def predict_NNM(self):
        
-        # this will pass the first 3 rows of features
-        # of our data as input to make predictions
-        self.model.predict(self.X_val.iloc[0:3, :])
+    #     # this will pass the first 3 rows of features
+    #     # of our data as input to make predictions
+    #     self.model.predict(self.X_val.iloc[0:3, :])
+
+
+if __name__ == '__main__':
+    df_prices = pd.read_csv(os.path.join('results', 'data', 'df_prices_with_indicators'))
+    my_bin_column = ""
+    columns = df_prices.columns.tolist()
+    for column in columns:
+       if column.find("steps_binned"):
+          my_bin_column = column
+
+    my_NNM_inst = my_NNM(df_prices,label_fields=["Close", "Volume"], target_field=my_bin_column, number_of_shifts_of_labels=5)
+
+    my_NNM_inst.prep_data()
+    my_NNM_inst.prep_NNM(3)
+    my_NNM_inst.train_NNM()

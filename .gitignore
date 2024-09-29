@@ -5,3 +5,6 @@ __pycache__/
 !results/pictures
 results/pictures/*
 !results/pictures/.gitkeep
+!results/data
+results/data/*
+!results/data/.gitkeep

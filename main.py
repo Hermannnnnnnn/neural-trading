@@ -41,6 +41,8 @@ print(raw_data_inst.df_prices.head())
 my_indicators_inst = my_indicators(raw_data_inst.df_prices)
 my_indicators_inst.gimme_macd(fast_periods=fast_periods, slow_periods=slow_periods, signal_periods=signal_periods)
 print(my_indicators_inst.df_prices.head())
+my_indicators_inst.df_prices.to_csv(os.path.join('results','data','df_prices_with_indicators'))
+
 #############################################################
 #Making figure
 ##############################################################
