@@ -2,6 +2,7 @@ import tensorflow as tf
 import re
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
 class my_NNM:
     def __init__(self, df_prices, label_fields = ['Close', 'Volume'], target_field = 'some_bin_column', number_of_shifts_of_labels=5):
@@ -79,7 +80,7 @@ class my_NNM:
                     # numerical predictions
                     loss='mae')  
     def train_NNM(self):
-       losses = self.model.fit(self.X_train, self.y_train,
+        losses = self.model.fit(self.X_train, self.y_train,
  
                    validation_data=(self.X_val, self.y_val),
                     
@@ -88,7 +89,14 @@ class my_NNM:
                    batch_size=256, 
                    epochs=15,  # total epoch
                    )
-       
+        fig = plt.figure()
+        ax = fig.add_subplot(1,1,1)
+        length = len(losses.history['loss'])
+        # loss_df.loc[:,['loss','val_loss']].plot()
+        ax.plot(list(range(0, length)), losses.history['loss'],color="red", label = "loss")       
+        ax.plot(list(range(0, length)), losses.history['val_loss'], color="blue", label = "val_loss") 
+        ax.legend(["loss", "val_loss"])      
+        plt.savefig(os.path.join("results","pictures", "myNNM_plot_losses.png"))
     # def predict_NNM(self):
        
     #     # this will pass the first 3 rows of features
