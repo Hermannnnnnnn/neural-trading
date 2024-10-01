@@ -83,13 +83,21 @@ class my_NNM:
 
 
     def build_model(self,hp):
+        """
+        keras tuner allows to find the best settings for the hyperparameters. By defining these hyperparameters as objects of the hyperparameter class,
+        we enable that keras tuner will search the optimal setting while tuning these hyperparameters as well.
+        In call_code we define the model which depends on these hyperparameters ie units, acitvation, dropout, lr.
+        These hyperparameters are objects belonging to the hyperparameters class:
+        - units = number of neurons per layer. Multiple values can be tried out
+        """
+        nodes_output = self.y_train.shape[1]
         def call_code(units, activation, dropout, lr):#contains code for model, input are hyperparameters to be optimized by keras-tuner
             model = keras.Sequential()
-            model.add(layers.Flatten())
+            # model.add(layers.Flatten())
             model.add(layers.Dense(units=units, activation=activation))
             if dropout:
                 model.add(layers.Dropout(rate=0.25))
-            model.add(layers.Dense(2, activation=activation))
+            model.add(layers.Dense(nodes_output, activation=activation))
             model.compile(
                 optimizer=keras.optimizers.Adam(learning_rate=lr),
                 loss="binary_crossentropy",#"categorical_crossentropy", #
@@ -109,13 +117,13 @@ class my_NNM:
         return model
     
 
-    def tune_model(self):
+    def tune_model(self, epochs = 5):
         tuner = RandomSearch(
         # tuner = BayesianOptimization(
                 self.build_model,
                 objective='val_accuracy',
-                max_trials=3,  # how many model variations to test? Only useful with
-                executions_per_trial=3,  # how many trials per variation? (same model could perform differently)
+                max_trials=10,  # how many model variations to test? Only useful with
+                executions_per_trial=1,  # how many trials per variation? (same model could perform differently)
                 directory=os.path.join(self.output_folder),
                 project_name = 'my_neural_trading_keras'
         )
@@ -123,7 +131,7 @@ class my_NNM:
         tuner.search(x=self.X_train,
                     y=self.y_train,
                     # verbose=2, # just slapping this here bc jupyter notebook. The console out was getting messy.
-                    epochs=3,
+                    epochs=epochs,
                     batch_size=64,
                     #callbacks=[tensorboard],  # if you have callbacks like tensorboard, they go here.
                     validation_data=(self.X_val, self.y_val))
