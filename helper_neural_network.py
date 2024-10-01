@@ -71,7 +71,6 @@ class my_NNM:
         max_val = self.X_train.max(axis= 0)
         min_val = self.X_train.min(axis= 0)    
         range = max_val.sub(min_val)
-        print(range)
         # range = max_val - min_val
         self.X_train = (self.X_train - min_val)/range
         self.X_val =  (self.X_val- min_val)/range
@@ -81,8 +80,7 @@ class my_NNM:
         self.y_val      = to_categorical(self.y_val, number_of_classes)
         return
 
-
-    def build_model(self,hp):
+    def build_tune_model(self,hp):
         """
         keras tuner allows to find the best settings for the hyperparameters. By defining these hyperparameters as objects of the hyperparameter class,
         we enable that keras tuner will search the optimal setting while tuning these hyperparameters as well.
@@ -120,7 +118,7 @@ class my_NNM:
     def tune_model(self, epochs = 5):
         tuner = RandomSearch(
         # tuner = BayesianOptimization(
-                self.build_model,
+                self.build_tune_model,
                 objective='val_accuracy',
                 max_trials=10,  # how many model variations to test? Only useful with
                 executions_per_trial=1,  # how many trials per variation? (same model could perform differently)
@@ -136,6 +134,11 @@ class my_NNM:
                     #callbacks=[tensorboard],  # if you have callbacks like tensorboard, they go here.
                     validation_data=(self.X_val, self.y_val))
         tuner.results_summary()
+        # Get the best models from the tuning process
+        best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+        self.model = tuner.hypermodel.build(best_hps)
+
+        return
 
     # The following is without keras_tuner, but simply code for optimizing a hardcoded model
     def prep_NNM(self, layers):
@@ -155,26 +158,29 @@ class my_NNM:
                     # MAE error is good for
                     # numerical predictions
                     loss='mse', metrics=['accuracy'])  #loss: mae = mean absolute error, mse = mean squared error
-    def train_NNM(self):
-        losses = self.model.fit(self.X_train.to_numpy(), self.y_train,
+    
+    def train_model(self):
+        losses = self.model.fit(self.X_train, self.y_train,
  
-                   validation_data=(self.X_val.to_numpy(), self.y_val),
+                   validation_data=(self.X_val, self.y_val),
                     
                    # it will use 'batch_size' number
                    # of examples per example
                    batch_size=256, 
                    epochs=50,  # total epoch
                    )
-        print('losses ')
-        print(losses.history)
-        fig = plt.figure()
-        ax = fig.add_subplot(1,1,1)
-        length = len(losses.history['loss'])
+        fig, (ax1, ax2) = plt.subplots(2,1)
+
+        length = len(losses.history['accuracy'])
         # loss_df.loc[:,['loss','val_loss']].plot()
-        ax.plot(list(range(0, length)), losses.history['loss'],color="red", label = "loss")       
-        ax.plot(list(range(0, length)), losses.history['val_loss'], color="blue", label = "val_loss") 
-        ax.legend(["loss", "val_loss"])      
-        plt.savefig(os.path.join("results","pictures", "myNNM_plot_losses.png"))
+        ax1.plot(list(range(0, length)), losses.history['accuracy'],color="red", label = "accuracy")       
+        ax1.plot(list(range(0, length)), losses.history['val_accuracy'], color="blue", label = "val_accuracy") 
+        ax1.legend(["accuracy", "val_accuracy"])      
+        ax2.plot(list(range(0, length)), losses.history['loss'],color="red", label = "loss")       
+        ax2.plot(list(range(0, length)), losses.history['val_loss'], color="blue", label = "val_loss") 
+        ax2.legend(["loss", "val_loss"])      
+        
+        plt.savefig(os.path.join("results","pictures", "train_model_results.png"))
     # def predict_NNM(self):
        
     #     # this will pass the first 3 rows of features
