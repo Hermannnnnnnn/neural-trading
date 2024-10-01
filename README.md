@@ -1,3 +1,5 @@
+# @Paul, de main.py schrijft een dataframe weg naar /results. Die wordt gebruikt in de __main__ in helper_neural_network.py. Als je die file doet draaien zie je een figuur verschijnen onder /results dat de loss function plot. It's awesome !!!
+
 # Neural trading
 1. [Introduction](1-introduction)
 2. [Historical data](2-historical-data-)
