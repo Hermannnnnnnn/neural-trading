@@ -27,7 +27,11 @@ slow_periods    = 26
 signal_periods  = 9
 
 #For neural network model
-number_of_stacks = 5 # we take the macd signals of, for instance, the last 5 moments as input for neural network.
+number_of_stacks        = 5 # we take the macd signals of, for instance, the last 5 moments as input for neural network.
+frac                    = .7 # tells how to divide data between training and validation sets
+tuning_number_of_epochs = 10 #is how many iterations we let the model fit to the training set
+
+
 ##############################################################
 def make_figure(raw_data_inst):
     dates    = raw_data_inst.df_prices['Date'].to_numpy()
@@ -72,5 +76,5 @@ for column in columns:
 print(my_bin_column)
 
 my_NNM_inst = my_NNM(raw_data_inst.df_prices,label_fields=[f'macd_{fast_periods}_{slow_periods}_{signal_periods}', "Volume"], target_field=my_bin_column)
-my_NNM_inst.prep_data()
-my_NNM_inst.tune_model()
+my_NNM_inst.prep_data(frac = frac)
+my_NNM_inst.tune_model(epochs=tuning_number_of_epochs)
