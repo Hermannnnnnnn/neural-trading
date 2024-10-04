@@ -55,29 +55,29 @@ class my_NNM:
         - self.y_train
         - self.y_val
         """
-        labels = []
+        self.labels = []
         #identifying the labels
         for column in self.df_prices.columns.tolist():
             for my_label in self.label_fields:
                 if re.search(rf'{my_label}_shifted_[\d]+', column):
-                    labels.append(column)
+                    self.labels.append(column)
         #dividing data into its training set and validation set and into labels and target
         count_rows = self.df_prices.shape[0]
-        self.X_train = self.df_prices[labels ][:(round(count_rows*frac))]
-        self.X_val = self.df_prices[labels ][( round(count_rows*frac)):count_rows]
+        self.X_train = self.df_prices[self.labels ][:(round(count_rows*frac))]
+        self.X_val = self.df_prices[self.labels ][( round(count_rows*frac)):count_rows]
         self.y_train = self.df_prices[self.target_field ][:(round(count_rows*frac))]
         self.y_val = self.df_prices[self.target_field ][( round(count_rows*frac)):count_rows]
         #scaling sets to range of [0,1]
         max_val = self.X_train.max(axis= 0)
-        min_val = self.X_train.min(axis= 0)    
-        range = max_val.sub(min_val)
+        self.min_val =  self.X_train.min(axis= 0)    
+        self.range = max_val.sub(self.min_val)
         # range = max_val - min_val
-        self.X_train = (self.X_train - min_val)/range
-        self.X_val =  (self.X_val- min_val)/range
+        self.X_train = (self.X_train - self.min_val)/self.range
+        self.X_val =  (self.X_val- self.min_val)/self.range
 
-        number_of_classes = self.y_train.nunique()
-        self.y_train    = to_categorical(self.y_train, number_of_classes)
-        self.y_val      = to_categorical(self.y_val, number_of_classes)
+        self.number_of_classes = self.y_train.nunique()
+        self.y_train    = to_categorical(self.y_train, self.number_of_classes)
+        self.y_val      = to_categorical(self.y_val, self.number_of_classes)
         return
 
     def build_tune_model(self,hp):
@@ -140,8 +140,11 @@ class my_NNM:
 
         return
 
-    # The following is without keras_tuner, but simply code for optimizing a hardcoded model
     def prep_NNM(self, layers):
+        """
+        defines a neural network, hardcoding the hyperparameters. 
+        Is replaced by tune_model which tunes the hyperparameters.
+        """
         input_shape = [self.X_train.shape[1]]       
         print(input_shape)
         self.model = tf.keras.Sequential([        
@@ -160,27 +163,35 @@ class my_NNM:
                     loss='mse', metrics=['accuracy'])  #loss: mae = mean absolute error, mse = mean squared error
     
     def train_model(self):
-        losses = self.model.fit(self.X_train, self.y_train,
- 
-                   validation_data=(self.X_val, self.y_val),
-                    
-                   # it will use 'batch_size' number
-                   # of examples per example
-                   batch_size=256, 
-                   epochs=50,  # total epoch
-                   )
-        fig, (ax1, ax2) = plt.subplots(2,1)
+        def plot_training_history(losses):
+            fig, (ax1, ax2) = plt.subplots(2,1)
+            length = len(losses.history['accuracy'])
+            # loss_df.loc[:,['loss','val_loss']].plot()
+            ax1.plot(list(range(0, length)), losses.history['accuracy'],color="red", label = "accuracy")       
+            ax1.plot(list(range(0, length)), losses.history['val_accuracy'], color="blue", label = "val_accuracy") 
+            ax1.legend(["accuracy", "val_accuracy"])      
+            ax2.plot(list(range(0, length)), losses.history['loss'],color="red", label = "loss")       
+            ax2.plot(list(range(0, length)), losses.history['val_loss'], color="blue", label = "val_loss") 
+            ax2.legend(["loss", "val_loss"])      
+            
+            plt.savefig(os.path.join("results","pictures", "train_model_results.png"))
 
-        length = len(losses.history['accuracy'])
-        # loss_df.loc[:,['loss','val_loss']].plot()
-        ax1.plot(list(range(0, length)), losses.history['accuracy'],color="red", label = "accuracy")       
-        ax1.plot(list(range(0, length)), losses.history['val_accuracy'], color="blue", label = "val_accuracy") 
-        ax1.legend(["accuracy", "val_accuracy"])      
-        ax2.plot(list(range(0, length)), losses.history['loss'],color="red", label = "loss")       
-        ax2.plot(list(range(0, length)), losses.history['val_loss'], color="blue", label = "val_loss") 
-        ax2.legend(["loss", "val_loss"])      
-        
-        plt.savefig(os.path.join("results","pictures", "train_model_results.png"))
+        losses = self.model.fit(self.X_train, self.y_train,
+                   validation_data=(self.X_val, self.y_val),
+                #    batch_size=256, 
+                   epochs=30,  # total epoch
+                   )
+    def predict_my_model(self, x):
+        print(x)
+        x_scaled = (x[self.labels]-self.min_val)/self.range
+        print('x_scaled equals')
+        print(x_scaled)
+
+        x_prediction = self.model.predict(
+                                        x_scaled#, batch_size=None#, verbose=&#x27;auto', steps=None, callbacks=None
+                                    )
+        print(x_prediction)
+        return x_prediction
     # def predict_NNM(self):
        
     #     # this will pass the first 3 rows of features
