@@ -1,4 +1,4 @@
-    #  Neural trading
+#  Neural trading
 1. [Introduction](1-introduction)
 2. [Running the project](2-running-the-project)
 3. [Historical data](3-historical-data-)
