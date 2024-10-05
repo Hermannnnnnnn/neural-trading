@@ -3,7 +3,7 @@
 2. [Running the project](2-running-the-project)
     1. [Prerequisites](21-prerequisites)
     2. [Running the project](22-running-the-project)
-3. [Historical data](3-historical-data-)
+3. [Historical data](3-historical-data)
     1. [yfinance](31-yfinance)
     2. [binance](32-binance)
 4. [ML model tools](4-ml-model-tools)
