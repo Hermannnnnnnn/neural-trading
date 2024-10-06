@@ -2,7 +2,7 @@
 1. [Introduction](1-introduction)
 2. [Running the project](2-running-the-project)
     1. [Prerequisites](21-prerequisites)
-    2. [Running the project](22-running-the-project)
+    2. [Running the project](22-run-the-project)
 3. [Historical data](3-historical-data)
     1. [yfinance](31-yfinance)
     2. [binance](32-binance)
@@ -10,6 +10,7 @@
     1. [stockpy](41-stockpy)
     2. [tensorflow](42-tensorflow)
 5. [Stock indicator tools](5-stock-indicators-tools)
+    1. [Stock-indicators](51-stock-indicators)
 6. [Neural network model design](6-neural-network-model-design)
     1.  [Input](61-input)
     2.  [Outcome](62-outcome)
@@ -32,7 +33,7 @@ How convenient that there are python packages enabling these requirements!!
 4. Activate the venv by executing `source .venv/bin/activate` for linux or `source .venv/bin/activate.ps1` for windows
 4. Run `pip install -r requirements.txt`
 
-## 2.2 Running the project
+## 2.2 Run the project
 
 At the moment, you run the project by 
 - running the *main.py* file. This will make all the data transformations run.
