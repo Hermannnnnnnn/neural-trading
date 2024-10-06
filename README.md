@@ -9,7 +9,7 @@
 4. [ML model tools](4-ml-model-tools)
     1. [stockpy](41-stockpy)
     2. [tensorflow](42-tensorflow)
-5. [Stock indicator tools](5-stock-indicators-tools)
+5. [Stock indicator tools](5-stock-indicator-tools)
     1. [Stock-indicators](51-stock-indicators)
 6. [Neural network model design](6-neural-network-model-design)
     1.  [Input](61-input)
