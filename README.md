@@ -12,7 +12,7 @@
 5. [Stock indicator tools](5-stock-indicators-tools)
 6. [Neural network model design](6-neural-network-model-design)
     1.  [Input](61-input)
-    2.  [Outcome](61-outcome)
+    2.  [Outcome](62-outcome)
 
 
 # 1. Introduction
